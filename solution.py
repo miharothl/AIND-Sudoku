@@ -42,7 +42,47 @@ def naked_twins(values):
     strategy repeatedly).
     """
     # TODO: Implement this function!
-    raise NotImplementedError
+
+    display(values)
+
+    for unit in unitlist:
+
+        unsolved_boxes = [box for box in unit if len(values[box]) > 1]
+
+        any_twins = {}
+
+        for unsolved_box in unsolved_boxes:
+
+            if values[unsolved_box] not in any_twins.keys():
+                any_twins[values[unsolved_box]] = []
+
+            any_twins[values[unsolved_box]].append(unsolved_box)
+
+        # check if any twins
+
+        twins = {}
+
+        for key in any_twins.keys():
+            if len(key) == 2 and len(any_twins[key]) == 2:
+                twins[key] = any_twins[key]
+
+        for key in any_twins.keys():
+            if key not in twins.keys():
+
+                for tk in twins.keys():
+                    for digit in tk:
+
+                        b = any_twins[key]
+                        values[b[0]] = values[b[0]].replace(digit, '')
+
+        # for digit in '123456789':
+        #     dplaces = [box for box in unit if digit in values[box]]
+        #     if len(dplaces) == 1:
+        #         assign_value(values, dplaces[0], digit)
+        #         # values[dplaces[0]] = digit
+
+
+    return values
 
 
 def eliminate(values):
@@ -131,6 +171,9 @@ def reduce_puzzle(values):
 
         # Your code here: Use the Only Choice Strategy
         values = only_choice(values)
+
+        # Your code here: Use the Naked Twins Strategy
+        values = naked_twins(values)
 
         # Check how many boxes have a determined value, to compare
         solved_values_after = len([box for box in values.keys() if len(values[box]) == 1])
